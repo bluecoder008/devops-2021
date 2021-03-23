@@ -16,6 +16,9 @@ class BaseJenkinsAPI:
         else:
             self.instance = Jenkins(self.url)
 
+    def copy_job(self, job_name, new_job_name):
+        self.instance.copy_job(job_name, new_job_name)
+
     def get_name(self):
         return self.url
 
@@ -27,6 +30,18 @@ class BaseJenkinsAPI:
 
     def get_number_jobs(self):
         return len(self.instance.keys())
+
+    def get_jobs(self):
+        return self.instance.get_jobs()
+
+    def has_job(self, job_name):
+        return self.instance.has_job(job_name)
+
+    def get_requester(self):
+        return self.instance.requester
+
+    def get_create_url(self):
+        return self.instance.get_create_url()
 
 
 # test driver
