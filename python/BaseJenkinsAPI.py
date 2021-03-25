@@ -5,7 +5,6 @@ import jenkinsapi
 import sys
 
 from jenkinsapi.jenkins import Jenkins
-#from BaseJenkinsJob import BaseJenkinsJob
 
 
 class BaseJenkinsAPI:
@@ -48,7 +47,6 @@ class BaseJenkinsAPI:
             params=params
         )
         print("The job {} has been successfully created".format(job_name))
-        #return BaseJenkinsJob.BaseJenkinsJob(self, job_name)
 
     def build_job(self, job_name):
         self.instance.build_job(job_name)
