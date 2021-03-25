@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+
+#import BaseJenkinsJob
 import jenkinsapi
 import sys
 
@@ -16,6 +18,41 @@ class BaseJenkinsAPI:
         else:
             self.instance = Jenkins(self.url)
 
+    # JJ group
+
+    def copy_job(self, job_name, new_job_name):
+        self.instance.copy_job(job_name, new_job_name)
+
+    def get_jobs(self):
+        return self.instance.get_jobs()
+
+    def has_job(self, job_name):
+        return self.instance.has_job(job_name)
+
+    def get_number_jobs(self):
+        return len(self.instance.keys())
+
+    def create_job(self, job_name, config_xml):
+        """
+        Create a job
+        :param str config_xml: XML configuration of new job
+        """
+        if not config_xml:
+            raise JenkinsAPIException('Job XML config cannot be empty')
+
+        params = {'name': job_name}
+        self.instance.requester.post_xml_and_confirm_status(
+            self.instance.get_create_url(),
+            data=config_xml,
+            params=params
+        )
+        print("The job {} has been successfully created".format(job_name))
+
+    def build_job(self, job_name):
+        self.instance.build_job(job_name)
+
+    # JJ /group
+
     def get_name(self):
         return self.url
 
@@ -24,9 +61,6 @@ class BaseJenkinsAPI:
 
     def get_api_version(self):
         return jenkinsapi.__version__
-
-    def get_number_jobs(self):
-        return len(self.instance.keys())
 
 
 # test driver
