@@ -14,6 +14,7 @@ from jenkinsapi.custom_exceptions import JenkinsAPIException
 class BaseJenkinsJob:
 
     def __init__(self, server, name):
+
         self._server = server
         self._name = name
         # if self._server.has_job(name):
