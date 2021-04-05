@@ -1,0 +1,26 @@
+## Docker
+# login/out to/from docker hub, enter credentials when needed
+docker login docker.io
+
+docker logout
+
+# create a docker image:
+$ docker build -t 2021devops/docker-class:latest .
+
+# show the docker images created
+$ docker images | grep 2021devops
+2021devops/docker-class              latest                                                  d18d8a22ffc0   47 seconds ago   1.23MB
+
+# run the docker image:
+$ docker run 2021devops/docker-class:latest
+
+# attach a bash to docker container:
+$ docker exec -it <container-id> bash
+
+$ push the docker image:
+$ docker push 2021devops/docker-class:latest
+docker push 2021devops/docker-class:latest
+
+$ pull the docker image:
+$ docker pull 2021devops/docker-class:latest
+
