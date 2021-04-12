@@ -1,0 +1,35 @@
+
+export UNAME="2021devops"
+export UPASS="devops2021"
+
+TOKEN=$(curl -s -k -H "Content-Type: application/json" -X POST -d '{"username": "'${UNAME}'", "password": "'${UPASS}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+
+NAMESPACES=$(curl -s -k -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/namespaces/ | jq -r '.namespaces|.[]')
+
+REPO_LIST=$(curl -s -k -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${UNAME}/?page_size=10000 | jq -r '.results|.[]|.name')
+
+# build a list of all images & tags
+for r in ${REPO_LIST}
+do
+  # get tags for repo
+  IMAGE_TAGS=$(curl -s -k -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${UNAME}/${r}/tags/?page_size=10000 | jq -r '.results|.[]|.name')
+
+  # build a list of images from tags
+  for j in ${IMAGE_TAGS}
+  do
+    # add each tag to list
+    FULL_IMAGE_LIST="${FULL_IMAGE_LIST} ${UNAME}/${r}:${j}"
+  done
+done
+
+# output list of all docker images
+for d in ${FULL_IMAGE_LIST}
+do
+  echo $d
+done
+
+# Retrive a specific tag
+curl -s -k -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${UNAME}/docker-class/tags/v1.0.1/
+
+# Delete a specific tag
+# curl -k -H "Authorization: JWT ${TOKEN}" -X DELETE https://hub.docker.com/v2/repositories/${UNAME}/docker-class/tags/v1.0.1/

@@ -24,3 +24,5 @@ docker push 2021devops/docker-class:latest
 $ pull the docker image:
 $ docker pull 2021devops/docker-class:latest
 
+# run Jenkins in docker
+docker run -p 8282:8080 --env JAVA_OPTS=-Djenkins.install.runSetupWizard=false jenkins/jenkins
