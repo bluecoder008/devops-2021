@@ -14,8 +14,7 @@ minikube status
 # use minikube dashboard
 minikube dashboard
 
-
-# creste jenkins namespace
+# create jenkins namespace
 kubectl create namespace jenkins-project
 
 # k8s pv create
