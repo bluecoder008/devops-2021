@@ -1,0 +1,87 @@
+
+# MINIKUBE PREP
+# install minikube
+echo https://minikube.sigs.k8s.io/docs/start/
+
+# start minikube
+minikube start
+
+# (optional) start minikube with 1 CPU
+minikube start --force --cpus 1
+
+# check status
+minikube status
+
+# use minikube dashboard
+minikube dashboard
+
+# JENKINS K8s
+# ref: https://www.jenkins.io/doc/book/installing/kubernetes/
+
+# Step 1 create jenkins namespace
+kubectl create namespace devops-tools
+
+## verify that jenkins namespace created
+kubectl get namespaces
+NAME                   STATUS   AGE
+default                Active   3d18h
+jenkins                Active   49s
+kube-node-lease        Active   3d18h
+kube-public            Active   3d18h
+kube-system            Active   3d18h
+kubernetes-dashboard   Active   43h
+
+# set the current namespace to jenkins
+kubectl config set-context --current --namespace=devops-tools
+
+## verify
+kubectl config view --minify --output 'jsonpath={..namespace}'
+
+# Step 2 create service account and RBAC role
+kubectl apply -f serviceAccount.yaml
+
+## verify
+kubectl get sa
+
+# Step 3 create a PV and PVC (after changing node name -> minikube in pv.yaml --using `k get nodes`)
+kubectl create -f volume.yaml
+
+## verify
+kubectl get pv
+kubectl get pvc
+
+# Step 4 creeate a deployment
+kubectl apply -f deployment.yaml
+
+## verify
+kubectl get deployments
+kubectl describe deployments
+
+# export Jenkins networking end-point using K8s service
+
+# here we deviate a little, because documentation is for a real Kubernetes 
+# clustter, not a minikube:
+'''
+$ k get nodes -o wide
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+minikube   Ready    control-plane   42h   v1.26.1   192.168.49.2   <none>        Ubuntu 20.04.5 LTS   5.15.49-linuxkit   docker://20.10.23
+
+'''
+kubectl apply -f service.yaml <<---- DON'T Do this
+
+
+# using 'expose' command to export Jenkins service end-point
+k expose deployment jenkins --type=LoadBalancer --port=8080
+
+## verify
+minikube tunnel
+k get svc # make sure 'external IP shown'
+
+
+open http://<external-ip>:8080/
+
+# To get Jenkins admin password:
+kubectl get pods  # get pod names from the output
+kubectl exec -it <pod-name> \
+    cat /var/jenkins_home/secrets/initialAdminPassword
+

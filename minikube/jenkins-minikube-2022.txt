@@ -1,0 +1,159 @@
+
+# install minikube
+echo https://minikube.sigs.k8s.io/docs/start/
+
+# start minikube
+minikube start
+
+# (optional) start minikube with 1 CPU
+minikube start --force --cpus 1
+
+# check status
+minikube status
+
+# use minikube dashboard
+minikube dashboard
+
+# create jenkins namespace
+kubectl create namespace jenkins
+
+# verify that jenkins namespace created
+kubectl get namespaces
+NAME                   STATUS   AGE
+default                Active   3d18h
+jenkins                Active   49s
+kube-node-lease        Active   3d18h
+kube-public            Active   3d18h
+kube-system            Active   3d18h
+kubernetes-dashboard   Active   43h
+
+# k8s pv create
+# (1) down yaml resource from the following url and save it in a file named "jenkins-volume.yaml":
+curl -k https://raw.githubusercontent.com/jenkins-infra/jenkins.io/master/content/doc/tutorials/kubernetes/installing-jenkins-on-kubernetes/jenkins-volume.yaml -O
+# (2) create pv resource:
+kubectl apply -f jenkins-volume.yaml
+
+# change file system permissions via minikube
+$ minikube ssh
+docker@minikube:~$ sudo mkdir /data/jenkins-volume
+docker@minikube:~$ sudo chown -R 1000:1000 /data/jenkins-volume
+
+# k8s system account
+# (1) download yaml:
+curl -k https://raw.githubusercontent.com/jenkins-infra/jenkins.io/master/content/doc/tutorials/kubernetes/installing-jenkins-on-kubernetes/jenkins-sa.yaml -O
+# (2) create system account resource:
+$ kubectl apply -f jenkins-sa.yaml
+serviceaccount/jenkins created
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+clusterrole.rbac.authorization.k8s.io/jenkins configured
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+clusterrolebinding.rbac.authorization.k8s.io/jenkins configured
+
+# install helm
+brew install helm
+
+# add repo
+helm repo add jenkinsci https://charts.jenkins.io
+helm repo update
+
+# search repo
+helm search repo jenkinsci
+
+# jenkins value resources
+# (1) download yaml and save contents to my-jenkins-values.yaml
+curl -k https://raw.githubusercontent.com/jenkinsci/helm-charts/main/charts/jenkins/values.yaml -o my-jenkins-values.yaml
+
+# (2) edit my-jenkins-values.yaml and save it to: jenkins-values.yaml
+$ diff my-jenkins-values.yaml jenkins-values.yaml
+129c129,130
+<   serviceType: ClusterIP
+---
+>   # serviceType: ClusterIP
+>   serviceType: NodePort
+145a147
+>   nodePort: 32000
+247c249
+<   installLatestPlugins: true
+---
+>   installLatestPlugins: false
+771c773
+<   storageClass:
+---
+>   storageClass: 
+807c809
+<   create: true
+---
+>   create: false
+809c811
+<   name:
+---
+>   name: jenkins
+
+# install Jenkins on minikube via helm:
+$ chart=jenkinsci/jenkins
+$ helm install jenkins -n jenkins -f jenkins-values.yaml $chart
+NAME: jenkins
+LAST DEPLOYED: Sat Apr  2 16:15:55 2022
+NAMESPACE: jenkins
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get your 'admin' user password by running:
+  kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/chart-admin-password && echo
+2. Get the Jenkins URL to visit by running these commands in the same shell:
+  export NODE_PORT=$(kubectl get --namespace jenkins -o jsonpath="{.spec.ports[0].nodePort}" services jenkins)
+  export NODE_IP=$(kubectl get nodes --namespace jenkins -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT/login
+
+3. Login with the password from step 1 and the username: admin
+4. Configure security realm and authorization strategy
+5. Use Jenkins Configuration as Code by specifying configScripts in your values.yaml file, see documentation: http:///configuration-as-code and examples: https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos
+
+For more information on running Jenkins on Kubernetes, visit:
+https://cloud.google.com/solutions/jenkins-on-container-engine
+
+For more information about Jenkins Configuration as Code, visit:
+https://jenkins.io/projects/jcasc/
+
+
+NOTE: Consider using a custom image with pre-installed plugins
+
+# upgrade via Helm
+helm upgrade jenkins  jenkinsci/jenkins -f jenkins-values.yaml  -n jenkins-project
+
+# uninstall jenkins via Helm
+helm uninstall jenkins
+
+# Verify deploy successfully
+# wait for a few minutes after the "helm install..." or "helm upgrade..." command
+kubectl get pods  -n jenkins-project
+# should see pods 'Running':
+
+NAME        READY   STATUS    RESTARTS   AGE
+jenkins-0   2/2     Running   0          8m16s
+
+# Port forwarding (after Jenkins deployed/installed successfully):
+$ kubectl -n jenkins port-forward jenkins-0 8080:8080
+# "jenkins-0" is the jenkins pod name (taken from output of "kubectl get pods -n jenkins")
+# at this point, http://localhost:8080 => should land the Jenkins login page
+
+# acquire admin password
+jsonpath=“{.data.jenkins-admin-password}"
+secret=$(kubectl get secret -n jenkins-project jenkins -o jsonpath=$jsonpath)
+echo $secret | base64 --decode && echo
+
+# login the Jenkins system with admin:<admin-password> (retrived as above)
+
+[DONE]
+
+# DEBUGGING commands
+# checking pods are running
+$ kubectl get pods -n jenkins
+
+# inspect the state of a pod
+$ kubectl describe pod <pod-name> -n jenkins
+
+# inspect the logs from a container within a pod (<container-name> found from above command)
+$ kube logs -p <pod-name> -c <container-name> -n jenkins 
+
+
