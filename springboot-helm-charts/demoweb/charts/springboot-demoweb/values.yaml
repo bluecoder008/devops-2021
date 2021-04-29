@@ -3,14 +3,15 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: binblee/springboot-helm-chart
-  tag: openjdk-9-jre
+  #repository: binblee/springboot-helm-chart
+  repository: 2021devops/springboot-demo
+  tag: latest
   pullPolicy: IfNotPresent
 service:
   name: nginx
   type: NodePort
-  externalPort: 8080
-  internalPort: 8080
+  externalPort: 6060
+  internalPort: 6060
 ingress:
   enabled: false
   # Used to create an Ingress record.
