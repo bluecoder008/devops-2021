@@ -16,7 +16,7 @@ This folder contains the code to demonstrate how to
        return f'Hello World (flask version {__version__})'
 
     if __name__ == '__main__':
-       app.run()
+       app.run(host='0.0.0.0')
 ```
 - Construct the Dockerfile
   - <code>$ cat Dockerfile</code>
