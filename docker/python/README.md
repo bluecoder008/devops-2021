@@ -29,5 +29,11 @@ This folder contains the code to demonstrate how to
 
     CMD ["python3", "my_app.py"]
 ```
-
- 
+- Build the docker image
+  - $<code>docker build . -t 2021devops/my_python_app</code>																	
+- [optional] Push the docker image
+  - $<code>docker push 2021devops/my_python_app</code>
+- Run the docker image
+  - $<code>docker run -d -p 5000:5000 -it 2021devops/my_python_app</code>
+- Verify the Dockerized app running as expected
+  - $<code>oprn http://localhost:5000</code>
