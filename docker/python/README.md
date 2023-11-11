@@ -37,3 +37,13 @@ This folder contains the code to demonstrate how to
   - $<code>docker run -d -p 5000:5000 -it 2021devops/my_python_app</code>
 - Verify the Dockerized app running as expected
   - $<code>oprn http://localhost:5000</code>
+#### Trouble-shooting notes
+- To start `bash` session inside the docker container
+  ```
+    $ docker ps  # inspect container listing and get the container id
+    CONTAINER ID   IMAGE           COMMAND              CREATED         STATUS         PORTS                    NAMES
+    a3503b07e6a3   my_python_app   "python my_app.py"   7 seconds ago   Up 6 seconds   0.0.0.0:5000->5000/tcp   condescending_sinoussi
+
+    $ docker exec -it a3503b07e6a3 bash
+    root@a3503b07e6a3:/#
+  ```
