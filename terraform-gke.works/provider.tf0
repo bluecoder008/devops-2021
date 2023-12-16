@@ -1,0 +1,8 @@
+provider "google" {
+  credentials = file("./leafy-loader-357302-fdc67afe3cf0.json")
+  project     = "My First Project"
+  region      = "us-central1"
+//  version     = "~> 2.5.0"
+//  version     = "4.36.0"
+}
+

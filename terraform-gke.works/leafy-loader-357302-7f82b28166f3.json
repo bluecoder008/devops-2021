@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "leafy-loader-357302",
+  "private_key_id": "7f82b28166f38a0a1404d5f0d61eeae3994127e6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+7jBkK6TTZCa6\nKunSx5H51L3fFSvZkS7H7Rgz1i33xuwEZQGhz+ZKEU9eizbMK4Y1FEQEgiBB7o7j\nt7x+4oNsX/pamiN36j0aI5h9kvogtzxvvMMFpgLPMtOVKY4t9Bdpl/ShYO6AbyKl\n+MzB0qcZ5u1M9eciPP4wcsLVdormzWLTsIbJE8RU4aZAo9hC/2vS6e/v2eCvQwWF\nAmjkNAg67TXXFi/VKSfRvPoB9MEWsSHtkilnkk0k15rE39xRyQ202X2qs6plgv/8\nVB9JaP/rYgsvQzkObQH0JLqNLOXeRXdebxJ2YuI6yO1mNJufHPrTCmk7qCjYcW0H\ngxgJyq3lAgMBAAECggEAHvIvxTies0WXElMcyXVf12CwMq11iULDFJP8+X/kPPYQ\nsIinilDOWGB0XxRM2ixOySEjAiEONemC3u1bn6w6lXD7/L3hdFDyvN8amvXc1Tsl\n0E2FxY9aArfP++v7l76pocuHkrWJiqcYtFJ+a4bnXyci/LeZkh7VK0iahCs9ybkl\ngQxByOMKoJH44+Qw/c0PlqzrHCQpd7a6L5Q1SutTQZbP8/fEeXilfGKArulXmWaT\ne6HdDeKPhl09GZSrpZ1knP+W/bmBpQl2BPlf8Fua5myGnYkYinWJpUQSWJO4AtwU\nU/NzswJOiDG6Bdu2ijCFu0xMQ9CiQpwx0MMpl/9vsQKBgQD+w1JofN0kjzWWN8vG\n6ATk7WSw80lJbFq65Dc8gvk+xolYBbdMjK70FXk0aJRe8npOI9yyXjz6mI1um7Nz\nZX/EEJEEPfEihD5GjIP0m5j3413ymrirH0cGXFobZl5OOw1BWQCkEbz2JTVKcTnR\nzYVeESuu2ZT/K87mW1ZoGjVrNQKBgQC/24V1zwQmz03Icp5WlXaAd9bwem2qtRJ1\nHyeEV9DLnRsi+Rzj8Ku6tvgNjYS9Dd/8BkPC03pwbaCzHXjmHhIUjqqNDAh9wbsI\nGhWvsHHMfZ2PYzJZ77NmsZFO752Zp3Ju1kpUz8MTnWf2IyTrEUgt8TJGxV7qF3wh\nRXckiqTd8QKBgDxTxkzl3HwOyXKz7bZBNP98044vXhhb5zRAXHAg16Ks4tMML3aa\nDcfQ2e22IgRFyP598YHvXOM+gqdBiYH29AVaouxtOo+g3xpXpdujiNqSZanQR5CG\nDIyOC+xXFlfSFfZ2e/deF+/1qaPiIf3ze/RlfoGeFnFCT3EvCcwHAMVNAoGBALha\nui1v1O9t97IK4TcVu57KiNDe8447HBdK7m/u6gUdW7wJX8dvtbReqJBtUgVP1dCY\nPHhzOY3a6bXzNf75GiqCxENwMqCUjaHFXt1JULBMbCAiE3n0KJEfQx90hB3nlsAG\nTbqdQTgR4pnTP2BZZOAwij0S3pdWJcLauxdz2eQhAoGAGNApWpNiX8AdZqUXn1ve\n1VatdLih/HmZhMmYU/B3RRdbJVk0koybWEX9XYaZMr614FN9TkE7HJanJa9JM617\nNjPExLeMgrGUO1fAy9H0oWpVwK4VS8PyWY34Bu0DJiCbzhFvUFSMZLXm4q7LuVcp\nRNlvf/M+KO+fmZjQFnX/P18=\n-----END PRIVATE KEY-----\n",
+  "client_email": "terra-bot@leafy-loader-357302.iam.gserviceaccount.com",
+  "client_id": "116279302653486791126",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/terra-bot%40leafy-loader-357302.iam.gserviceaccount.com"
+}
