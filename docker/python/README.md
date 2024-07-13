@@ -36,7 +36,7 @@ This folder contains the code to demonstrate how to
 - Run the docker image
   - $<code>docker run -d -p 5000:5000 -it 2021devops/my_python_app</code>
 - Verify the Dockerized app running as expected
-  - $<code>oprn http://localhost:5000</code>
+  - $<code>open http://localhost:5000</code>
 #### Trouble-shooting notes
 - To start `bash` session inside the docker container
   ```
