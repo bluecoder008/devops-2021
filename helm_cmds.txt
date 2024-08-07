@@ -1,0 +1,48 @@
+# list all installed releases
+helm list
+
+# review all previous resources
+kubectl get all --selector app=demo
+# Clean up previous resources
+kubectl delete all --selector app=demo
+
+# install a new release
+#   in devops2
+cd demo-helm3
+helm upgrade --install demo ./k8s/demo
+
+# delete installed app
+helm delete demo
+
+# override variables
+$ cat k8s/demo/staging-values.yaml 
+environment: staging
+replicas: 2
+
+helm upgrade --install demo-staging ./k8s/demo  --values k8s/demo/staging-values.yaml
+kubectl get all --selector app=demo
+
+# usinng --set 
+helm upgrade --install demo-staging ./k8s/demo --set replica=6
+
+# to see variables available to set
+helm inspect values k8s/demo
+
+# rollback and forward!!
+helm rollback demo-staging 1
+helm rollback demo-staging 4
+
+# automatic rollback
+cat staging-values-bad.yaml
+environment: staging
+container:
+  image: cloudnatived/demo2222222
+replicas: 2
+
+# --atomic --timeout
+helm upgrade --install demo-staging ./k8s/demo  --values k8s/demo/staging-values-bad.yaml --atomic  --timeout 100s
+
+
+Error: UPGRADE FAILED: an error occurred while rolling back the release. original upgrade error: timed out waiting for the condition: release demo-staging failed: timed out waiting for the condition
+kubectl get all --selector app=demo
+
