@@ -14,6 +14,7 @@ minikube status
 # use minikube dashboard
 minikube dashboard
 
+
 # create jenkins namespace
 kubectl create namespace jenkins-project
 
@@ -41,32 +42,13 @@ helm search repo jenkinsci
 
 # jenkins value resources
 # (1) down yaml:
-curl -k https://raw.githubusercontent.com/jenkinsci/helm-charts/main/charts/jenkins/values.yaml -o jenkins-values.yaml-download
-# (2) edit jenkins-values.yaml-downloaded and save it to: jenkins-values.yaml
-$ diff jenkins-values.yaml jenkins-values.yaml-download
-107,108c107,108
-<   servicePort: 8888
-<   targetPort: 8888
----
->   servicePort: 8080
->   targetPort: 8080
-718c718
-<   create: false
----
->   create: true
-720c720
-<   name: jenkins
----
->   name:
+curl -k https://raw.githubusercontent.com/jenkinsci/helm-charts/main/charts/jenkins/values.yaml -o jenkins-values.yaml
 
 # install Jenkins on minikube via helm:
 helm install jenkins -n jenkins-project -f jenkins-values.yaml jenkinsci/jenkins
 
 # upgrade via Helm
 helm upgrade jenkins  jenkinsci/jenkins -f jenkins-values.yaml  -n jenkins-project
-
-# uninstall jenkins via Helm
-helm uninstall jenkins
 
 # Verify deploy successfully
 kubectl get pods  -n jenkins-project
@@ -82,5 +64,8 @@ secret=$(kubectl get secret -n jenkins-project jenkins -o jsonpath=$jsonpath)
 echo $(echo $secret | base64 —decode)
 
 # login the Jenkins system with admin:<admin-password> (retrived as above)
+
+# uninstall jenkins via Helm
+helm uninstall jenkins -n jenkins-project
 
 [DONE]
